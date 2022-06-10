@@ -1,6 +1,8 @@
 import './App.css';
 import React, {useState, useEffect} from 'react';
 
+// If you no need animation library delete it too
+import { animated, useSpring } from '@react-spring/web'
 
 function Grid() {
 
@@ -8,14 +10,16 @@ function Grid() {
   const closeModal = () => {
     setModal(false)
   }
-
   const showModal = () => {
     setModal(true)
   }
+  const styles = useSpring({
+    opacity: modal ? 1 : 0,
+  })
 
   useEffect(() => {
-      modal ? document.body.style.overflow = 'hidden' : document.body.style.overflow = 'unset'
- }, [modal ]);
+      modal ? document.body.style.overflow = 'hidden' : document.body.style.overflow = 'unset';
+ }, [modal]);
 
   return(
     <div className="wrapper">
@@ -49,10 +53,20 @@ function Grid() {
             languages-section
             </div>
           <div className="dependencies-section">modal-section <br /> 
-            <button onClick={() => showModal()}>OPEN MODAL</button>
+            <button onClick={() => showModal()} >OPEN MODAL</button>
+            {/* This one without any animation */}
+            {/* { modal ?  <Modal modal={modal} close={closeModal} style={modal ? openStyle : closeStyle}></Modal>: null } */}
 
+            {/* ********************************************** */}
+            {/* ********************************************** */}
+            {/* ********************************************** */}
+
+            {/* Also you can use smooth fadeIn animation on modal (but here used library from side)*/}
             {
-              modal ?  <Modal modal={modal} close={closeModal}></Modal>: null 
+              modal ? 
+                <animated.div style={styles}>
+                  <Modal modal={modal} close={closeModal}></Modal>
+                </animated.div> : null
             }
 
           </div>
